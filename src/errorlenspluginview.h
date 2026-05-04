@@ -23,6 +23,7 @@
 namespace ErrorLens
 {
 
+class KateDiagnosticAdapter;
 class ErrorLensNoteProvider;
 
 /** Plugin view — one instance per MainWindow.
@@ -57,17 +58,16 @@ private Q_SLOTS:
     /** Called when the MainWindow creates a new KTextEditor::View. */
     void onViewCreated(KTextEditor::View *view);
 
-    /** Called right before a KTextEditor::View is destroyed. */
-    void onViewDestroyed(QObject *view);
+    /** Called while a KTextEditor::Document still has valid view state. */
+    void onDocumentAboutToClose(KTextEditor::Document *doc);
 
 private:
     /** Attempt to connect to Kate's internal LSP diagnostic infrastructure.
      *
-     *  Uses MainWindow::pluginView() to locate the LSP client plugin and
-     *  connect its diagnostic signals to the bridge.
+     *  Delegates runtime discovery and signal conversion to KateDiagnosticAdapter.
      *
-     *  If Kate's LSP client is not available or the interface has changed,
-     *  the bridge stays unconnected and no inline diagnostics are shown.
+     *  If Kate's LSP client is unavailable, the adapter listens for a later
+     *  pluginViewCreated signal and connects when the provider appears.
      */
     void connectToKateLsp();
 
@@ -78,6 +78,9 @@ private:
 
     /** Diagnostic data store — one per plugin view. */
     KateDiagnosticBridge *const m_bridge;
+
+    /** Runtime connection from Kate's LSP diagnostics provider to m_bridge. */
+    KateDiagnosticAdapter *const m_adapter;
 
     /** Document → its InlineNoteProvider (one provider per document). */
     QHash<const KTextEditor::Document *, ErrorLensNoteProvider *> m_providers;

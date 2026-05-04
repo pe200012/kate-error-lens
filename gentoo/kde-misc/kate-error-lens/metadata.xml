@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>user@localhost</email>
+		<name>Error Lens Contributor</name>
+	</maintainer>
+	<longdescription lang="en">
+		Kate Error Lens is a KTextEditor plugin that renders LSP diagnostics
+		(Errors, Warnings, Info, Hints) inline at the end of affected source
+		lines — similar to VSCode's "Error Lens" extension.
+
+		It uses KTextEditor::InlineNoteProvider for non-intrusive rendering
+		and subscribes to Kate's built-in LSP client for real-time updates.
+
+		Features:
+		- Inline diagnostic rendering at line-ends with severity colour coding
+		- Incremental updates for performance on large files
+		- Configurable severity filter, font scale, and message length truncation
+		- Semi-transparent background with configurable colours
+		- Tooltip on hover showing full diagnostic details
+		- Click to navigate to diagnostic location
+	</longdescription>
+	<upstream>
+		<remote-id type="github">pe200012/kate-error-lens</remote-id>
+	</upstream>
+</pkgmetadata>
