@@ -47,21 +47,21 @@ public:
     // -- KTextEditor::InlineNoteProvider interface ------------------------
 
     QList<int> inlineNotes(int line) const override;
-    QSize inlineNoteSize(const InlineNote &note) const override;
-    void paintInlineNote(const InlineNote &note,
+    QSize inlineNoteSize(const KTextEditor::InlineNote &note) const override;
+    void paintInlineNote(const KTextEditor::InlineNote &note,
                          QPainter &painter,
                          Qt::LayoutDirection direction) const override;
 
     // -- Activation handlers ----------------------------------------------
 
-    void inlineNoteActivated(const InlineNote &note,
+    void inlineNoteActivated(const KTextEditor::InlineNote &note,
                              Qt::MouseButtons buttons,
                              const QPoint &globalPos) override;
 
-    void inlineNoteFocusInEvent(const InlineNote &note,
+    void inlineNoteFocusInEvent(const KTextEditor::InlineNote &note,
                                 const QPoint &globalPos) override;
 
-    void inlineNoteFocusOutEvent(const InlineNote &note) override;
+    void inlineNoteFocusOutEvent(const KTextEditor::InlineNote &note) override;
 
 private Q_SLOTS:
     /** Full document diagnostic update.  Rebuilds the whole cache. */

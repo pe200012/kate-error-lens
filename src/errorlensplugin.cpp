@@ -40,10 +40,12 @@ void ErrorLensPlugin::writeSessionConfig(KConfigGroup &group)
     m_config->save(group);
 }
 
-} // namespace ErrorLens
-
 // Register the plugin with KDE's plugin factory so KTextEditor can
 // discover and load it from the JSON metadata file.
-K_PLUGIN_CLASS_WITH_JSON(ErrorLens::ErrorLensPlugin, "errorlens.json")
+// Must be inside the namespace so the macro-generated factory class
+// uses an unqualified name (GCC < 15 rejects "class NS::Name" syntax).
+K_PLUGIN_CLASS_WITH_JSON(ErrorLensPlugin, "errorlens.json")
+
+} // namespace ErrorLens
 
 #include "errorlensplugin.moc"

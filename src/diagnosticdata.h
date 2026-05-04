@@ -77,6 +77,23 @@ struct DiagnosticData {
     {
         return endLine != line || endColumn != column;
     }
+
+    bool operator==(const DiagnosticData &other) const
+    {
+        return severity == other.severity
+            && line == other.line
+            && column == other.column
+            && endLine == other.endLine
+            && endColumn == other.endColumn
+            && message == other.message
+            && source == other.source
+            && code == other.code;
+    }
+
+    bool operator!=(const DiagnosticData &other) const
+    {
+        return !(*this == other);
+    }
 };
 
 using DiagnosticList = QList<DiagnosticData>;

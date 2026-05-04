@@ -32,9 +32,9 @@ include(ECMSetupQtPluginMacroNames)
 # -- Dependencies ------------------------------------------------------------
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
 find_package(KF6 REQUIRED COMPONENTS
-    KTextEditor
+    TextEditor
     CoreAddons
-    ConfigCore
+    Config
     I18n
     XmlGui
 )
@@ -46,6 +46,7 @@ set(ERRORLENS_SOURCES
     src/errorlensnoteprovider.cpp
     src/katediagnosticbridge.cpp
     src/errorlensconfig.cpp
+    src/diagnosticprovider_moc.cpp
 )
 
 # -- Plugin target -----------------------------------------------------------
@@ -58,7 +59,7 @@ add_library(kateerrorlens MODULE ${ERRORLENS_SOURCES})
 target_link_libraries(kateerrorlens PRIVATE
     Qt6::Widgets
     Qt6::Gui
-    KF6::KTextEditor
+    KF6::TextEditor
     KF6::CoreAddons
     KF6::ConfigCore
     KF6::I18n

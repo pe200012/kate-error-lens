@@ -55,7 +55,7 @@ QList<int> ErrorLensNoteProvider::inlineNotes(int line) const
     return {};
 }
 
-QSize ErrorLensNoteProvider::inlineNoteSize(const InlineNote &note) const
+QSize ErrorLensNoteProvider::inlineNoteSize(const KTextEditor::InlineNote &note) const
 {
     const int line = note.position().line();
     const auto it = m_lineDiagnostics.constFind(line);
@@ -88,11 +88,11 @@ QSize ErrorLensNoteProvider::inlineNoteSize(const InlineNote &note) const
 // KTextEditor::InlineNoteProvider — paint
 // ---------------------------------------------------------------------------
 
-void ErrorLensNoteProvider::paintInlineNote(const InlineNote &note,
+void ErrorLensNoteProvider::paintInlineNote(const KTextEditor::InlineNote &note,
                                             QPainter &painter,
                                             Qt::LayoutDirection direction) const
 {
-    Q_UNUSED(direction);
+    (void)direction;
 
     const int line = note.position().line();
     const auto it = m_lineDiagnostics.constFind(line);
@@ -158,7 +158,7 @@ void ErrorLensNoteProvider::paintInlineNote(const InlineNote &note,
 // Interaction handlers
 // ---------------------------------------------------------------------------
 
-void ErrorLensNoteProvider::inlineNoteActivated(const InlineNote &note,
+void ErrorLensNoteProvider::inlineNoteActivated(const KTextEditor::InlineNote &note,
                                                 Qt::MouseButtons buttons,
                                                 const QPoint &globalPos)
 {
@@ -176,11 +176,11 @@ void ErrorLensNoteProvider::inlineNoteActivated(const InlineNote &note,
     const auto &first = it->first();
     const auto *view = note.view();
     if (view) {
-        view->setCursorPosition({first.line, first.column});
+        const_cast<KTextEditor::View *>(view)->setCursorPosition({first.line, first.column});
     }
 }
 
-void ErrorLensNoteProvider::inlineNoteFocusInEvent(const InlineNote &note,
+void ErrorLensNoteProvider::inlineNoteFocusInEvent(const KTextEditor::InlineNote &note,
                                                    const QPoint &globalPos)
 {
     Q_UNUSED(globalPos);
@@ -206,10 +206,10 @@ void ErrorLensNoteProvider::inlineNoteFocusInEvent(const InlineNote &note,
         lines.append(entry);
     }
 
-    QToolTip::showText(globalPos, lines.join(QChar::LineFeed), note.view());
+    QToolTip::showText(globalPos, lines.join(QChar::LineFeed), const_cast<KTextEditor::View *>(note.view()));
 }
 
-void ErrorLensNoteProvider::inlineNoteFocusOutEvent(const InlineNote &note)
+void ErrorLensNoteProvider::inlineNoteFocusOutEvent(const KTextEditor::InlineNote &note)
 {
     Q_UNUSED(note);
     QToolTip::hideText();
