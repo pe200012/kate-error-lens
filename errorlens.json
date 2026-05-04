@@ -1,0 +1,22 @@
+{
+    "KPlugin": {
+        "Name": "Error Lens",
+        "Description": "Display LSP diagnostics inline at the end of each line",
+        "Description[zh_CN]": "在每行末尾以行内形式显示 LSP 诊断信息",
+        "Icon": "tools-report-bug",
+        "Authors": [
+            {
+                "Name": "Error Lens Contributors",
+                "Email": ""
+            }
+        ],
+        "License": "LGPL-2.0-or-later",
+        "Version": "1.0.0",
+        "Category": "Utilities",
+        "EnabledByDefault": true
+    },
+    "X-Kate-Version": "24.08",
+    "MimeTypes": [
+        "text/plain"
+    ]
+}
