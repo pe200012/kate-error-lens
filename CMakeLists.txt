@@ -25,6 +25,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package(ECM 5.240.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 include(KDEInstallDirs)
+
+# Tests are opt-in for packagers and regular local builds. KDECMakeSettings
+# includes CTest and normally defaults BUILD_TESTING to ON, so seed the cache
+# before including it while still respecting an explicit -DBUILD_TESTING=ON.
+if(NOT DEFINED BUILD_TESTING)
+    set(BUILD_TESTING OFF CACHE BOOL "Build automated tests")
+endif()
+
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMSetupQtPluginMacroNames)
@@ -44,6 +52,7 @@ set(ERRORLENS_SOURCES
     src/errorlensplugin.cpp
     src/errorlenspluginview.cpp
     src/errorlensnoteprovider.cpp
+    src/katediagnosticadapter.cpp
     src/katediagnosticbridge.cpp
     src/errorlensconfig.cpp
     src/diagnosticprovider_moc.cpp
@@ -75,6 +84,40 @@ set_source_files_properties(
     ${CMAKE_CURRENT_SOURCE_DIR}/errorlens.json PROPERTIES HEADER_FILE_ONLY TRUE
 )
 target_sources(kateerrorlens PRIVATE errorlens.json)
+
+# -- Tests -------------------------------------------------------------------
+if(BUILD_TESTING)
+    find_package(Qt6 REQUIRED COMPONENTS Test)
+
+    add_executable(errorlens_ui_test
+        tests/errorlensuitest.cpp
+        src/errorlensnoteprovider.cpp
+        src/katediagnosticadapter.cpp
+        src/katediagnosticbridge.cpp
+        src/errorlensconfig.cpp
+        src/diagnosticprovider_moc.cpp
+    )
+
+    target_include_directories(errorlens_ui_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+
+    target_link_libraries(errorlens_ui_test PRIVATE
+        Qt6::Test
+        Qt6::Widgets
+        Qt6::Gui
+        KF6::TextEditor
+        KF6::ConfigCore
+        KF6::I18n
+        KF6::XmlGui
+    )
+
+    add_test(NAME errorlens_ui_test COMMAND errorlens_ui_test)
+    set_tests_properties(errorlens_ui_test PROPERTIES
+        ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_LOGGING_RULES=*.debug=false"
+        TIMEOUT 30
+    )
+endif()
 
 # -- Install -----------------------------------------------------------------
 # KTextEditor plugins live under the kf6/ktexteditor subdirectory of the
